@@ -4,7 +4,9 @@ import {
   AiOutlinePlus,
   AiOutlineSearch,
   AiOutlineDown,
+  AiOutlineUser,
 } from "react-icons/ai";
+import Button from "./Button";
 
 const Header = () => {
   return (
@@ -50,19 +52,24 @@ const Header = () => {
           />
         </form>
       </div>
-      <div className="flex gap-4 text-neutral-300">
+      {/* <div className="flex gap-4 text-neutral-300">
         <AiOutlineMessage size="1.4rem" />
         <AiOutlineBell size="1.4rem" />
         <AiOutlinePlus size="1.4rem" />
+      </div> */}
+      <div className="flex gap-2">
+        <Button>Log In</Button>
+        <Button outline={true}>Sign Up</Button>
       </div>
-      <div className="flex items-center gap-2 px-4">
-        <img
+      <button className="flex items-center gap-2 px-2 py-1 border border-transparent hover:border-neutral-700 rounded-md">
+        {/*  <img
           src="./img/noavatar.png"
           alt="User profile picture."
-          className="h-7 rounded-full object-cover"
-        />
-        <AiOutlineDown className="text-neutral-300" size=".8rem" />
-      </div>
+          className="m-1 h-6 rounded-full object-cover"
+        /> */}
+        <AiOutlineUser className="text-neutral-500" size="1.5rem" />
+        <AiOutlineDown className="text-neutral-500" size=".75rem" />
+      </button>
     </header>
   );
 };
