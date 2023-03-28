@@ -11,7 +11,7 @@ const PostForm = () => {
           <form className="border bg-neutral-700 flex grow border-neutral-600 rounded-md">
             <input
               type="text"
-              className="bg-transparent outline-none py-2 px-3 text-sm"
+              className="bg-transparent outline-none py-2 px-3 text-sm w-full"
               placeholder="New Post"
             />
           </form>
