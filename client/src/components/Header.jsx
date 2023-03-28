@@ -22,9 +22,9 @@ const Header = () => {
   const ref = useOutsideClick(handleClickOutside);
 
   return (
-    <header className="sticky top-0 bg-neutral-900 z-50">
-      <nav className="p-2 relative flex gap-8 items-center">
-        <div className="flex gap-2 items-center px-4">
+    <header className="sticky top-0 bg-neutral-900 z-50 h-12">
+      <div className="px-5 relative flex items-center h-full border-b border-neutral-700">
+        <div className="flex gap-2 items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
@@ -56,8 +56,8 @@ const Header = () => {
           </svg>
         </div>
         <div className="flex grow">
-          <form className="bg-neutral-800 h-8  mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-500 border border-neutral-700 max-w-2xl">
-            <AiOutlineSearch size="1.4rem" />
+          <form className="bg-neutral-800 h-10 mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-300 border border-neutral-700 max-w-2xl">
+            <AiOutlineSearch className="text-neutral-500" size="1.4rem" />
             <input
               type="text"
               className="bg-transparent outline-none text-sm w-full"
@@ -95,7 +95,7 @@ const Header = () => {
             </button>
           </div>
         )}
-      </nav>
+      </div>
       {/* <LoginModal /> */}
     </header>
   );
