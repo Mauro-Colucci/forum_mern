@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import {
   AiOutlineMessage,
   AiOutlineBell,
@@ -9,28 +9,17 @@ import {
   AiOutlineLogin,
 } from "react-icons/ai";
 import Button from "./Button";
+import useOutsideClick from "../hooks/useOutsideClick";
+import LoginModal from "./LoginModal";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const wrapperRef = useRef();
 
-  function useOutsideAlerter(ref) {
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setOpen(false);
-        }
-      }
-      // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  }
+  const handleClickOutside = () => {
+    setOpen(false);
+  };
 
-  useOutsideAlerter(wrapperRef);
+  const ref = useOutsideClick(handleClickOutside);
 
   return (
     <header className="sticky top-0 bg-neutral-900 z-50">
@@ -88,7 +77,7 @@ const Header = () => {
         <button
           className="flex items-center gap-2 px-2 py-1 border border-transparent hover:border-neutral-700 rounded-md"
           onClick={() => setOpen(!open)}
-          ref={wrapperRef}
+          ref={ref}
         >
           {/*  <img
           src="./img/noavatar.png"
@@ -99,10 +88,7 @@ const Header = () => {
           <AiOutlineDown className="text-neutral-500" size=".75rem" />
         </button>
         {open && (
-          <div
-            className="absolute top-8 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden"
-            ref={wrapperRef}
-          >
+          <div className="absolute top-8 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden">
             {/**links */}
             <button className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black">
               <AiOutlineLogin size="1.2rem" /> Log In / Sign Up
@@ -110,6 +96,7 @@ const Header = () => {
           </div>
         )}
       </nav>
+      {/* <LoginModal /> */}
     </header>
   );
 };
