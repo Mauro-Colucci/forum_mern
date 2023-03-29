@@ -10,13 +10,25 @@ import {
 } from "react-icons/ai";
 import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
-import LoginModal from "./LoginModal";
+import AuthModal from "./AuthModal";
 
 const Header = () => {
+  const [modalType, setModalType] = useState("");
   const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleClickOutside = () => {
     setOpen(false);
+  };
+
+  const clickLogin = () => {
+    setModalType("Log In");
+    setModalOpen(!modalOpen);
+  };
+
+  const clickSubmit = () => {
+    setModalType("Sign Up");
+    setModalOpen(!modalOpen);
   };
 
   const ref = useOutsideClick(handleClickOutside);
@@ -71,8 +83,11 @@ const Header = () => {
         <AiOutlinePlus size="1.4rem" />
       </div> */}
         <div className="hidden sm:flex gap-2">
-          <Button>Log In</Button>
-          <Button outline={true}>Sign Up</Button>
+          <Button onClick={clickLogin}>Log In</Button>
+          <Button outline={true} onClick={clickSubmit}>
+            Sign Up
+          </Button>
+          {/* <Button outline={1}>Sign Up</Button> */}
         </div>
         <button
           className="flex items-center gap-2 px-2 py-1 border border-transparent hover:border-neutral-700 rounded-md"
@@ -96,7 +111,13 @@ const Header = () => {
           </div>
         )}
       </div>
-      {/* <LoginModal /> */}
+      {modalOpen && (
+        <AuthModal
+          modalType={modalType}
+          setModalType={setModalType}
+          onClick={() => setModalOpen(false)}
+        />
+      )}
     </header>
   );
 };
