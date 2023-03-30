@@ -7,9 +7,11 @@ import {
   AiOutlineDown,
   AiOutlineUser,
   AiOutlineLogin,
+  AiOutlineLogout,
 } from "react-icons/ai";
 import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
+import newRequest from "../utils/newRequest";
 import AuthModal from "./AuthModal";
 
 const Header = () => {
@@ -26,12 +28,22 @@ const Header = () => {
     setModalOpen(!modalOpen);
   };
 
-  const clickSubmit = () => {
+  const clickSignUp = () => {
     setModalType("Sign Up");
     setModalOpen(!modalOpen);
   };
 
   const ref = useOutsideClick(handleClickOutside);
+
+  const handleLogout = async () => {
+    try {
+      await newRequest.post("/auth/logout");
+      /* localStorage.setItem("currentUser", null);
+      navigate("/"); */
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <header className="sticky top-0 bg-neutral-900 z-50 h-12">
@@ -84,7 +96,7 @@ const Header = () => {
       </div> */}
         <div className="hidden sm:flex gap-2">
           <Button onClick={clickLogin}>Log In</Button>
-          <Button outline={true} onClick={clickSubmit}>
+          <Button outline={true} onClick={clickSignUp}>
             Sign Up
           </Button>
           {/* <Button outline={1}>Sign Up</Button> */}
@@ -107,6 +119,13 @@ const Header = () => {
             {/**links */}
             <button className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black">
               <AiOutlineLogin size="1.2rem" /> Log In / Sign Up
+            </button>
+            <button
+              className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
+              onClick={handleLogout}
+            >
+              <AiOutlineLogout size="1.2rem" />
+              Logout
             </button>
           </div>
         )}

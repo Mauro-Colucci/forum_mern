@@ -1,15 +1,49 @@
 import Input from "./Input";
 import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
-import { useState } from "react";
+import newRequest from "../utils/newRequest";
+import { useEffect, useState } from "react";
+//import { useNavigate } from "react-router-dom";
 
 const AuthModal = ({ onClick, modalType, setModalType }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
-  console.log(username, email, password, confirmPassword);
+  //const navigate = useNavigate();
+
+  useEffect(() => {
+    setError("");
+  }, [username, email, password, confirmPassword, modalType]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (modalType === "Log In") {
+        const res = await newRequest.post("/auth/login", {
+          username,
+          password,
+        });
+        /* localStorage.setItem("currentUser", JSON.stringify(res.data));
+      navigate("/"); */
+      }
+      if (modalType === "Sign Up") {
+        const res = await newRequest.post("/auth/register", {
+          username,
+          email,
+          password,
+          confirmPassword,
+        });
+      }
+      //sets modalOpen to false
+      onClick();
+    } catch (err) {
+      console.error(err);
+      setError(err.response.data);
+    }
+  };
 
   const ref = useOutsideClick(onClick);
   return (
@@ -25,7 +59,7 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
               X
             </span>
           </div>
-          <form className="flex flex-col gap-4 w-full">
+          <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>
             <Input
               type="text"
               placeholder="Username"
@@ -55,6 +89,7 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
               />
             )}
             <Button className="lg:w-full text-base py-2">{modalType}</Button>
+            {!!error && <span className="text-red-700">{error}</span>}
           </form>
           {modalType === "Log In" ? (
             <span className="text-sm text-neutral-500">

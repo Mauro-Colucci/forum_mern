@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 import connectDB from "./config/connectDB.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import logger from "morgan";
+
+import authRoutes from "./routes/auth.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config({ path: "./config/.env" });
 const app = express();
@@ -14,8 +18,14 @@ app.use(
     credentials: true,
   })
 );
+app.use(logger("dev"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use("/api/auth", authRoutes);
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   connectDB();
