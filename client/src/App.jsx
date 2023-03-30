@@ -8,8 +8,11 @@ import {
   createBrowserRouter,
   ScrollRestoration,
 } from "react-router-dom";
+import useAuth from "./hooks/useAuth";
 
 const Layout = () => {
+  const user = useAuth();
+
   return (
     <>
       <Header />
@@ -17,8 +20,10 @@ const Layout = () => {
       <Outlet /> */}
       {/**will create routes for this and remove from layout. */}
       <SubHeader />
-      <PostForm />
-      <Post />
+      <div className="flex flex-col gap-4 py-4">
+        {!!user && <PostForm />}
+        <Post />
+      </div>
     </>
   );
 };
