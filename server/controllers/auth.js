@@ -20,7 +20,7 @@ export const register = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.body.username }).exec();
     if (!user) return next(createError(404, "User not found."));
 
     const match = await bcrypt.compare(req.body.password, user.password);
@@ -42,15 +42,15 @@ export const login = async (req, res, next) => {
         sameSite: "none",
         secure: true,
       })
-      .send(info);
-    //to use with jwt-decode in react
-    //.send(token);
+      //.send(info);
+      //to use with jwt-decode in react
+      .send(token);
   } catch (err) {
     next(err);
   }
 };
 
-export const logout = async (req, res, next) => {
+export const logout = (req, res, next) => {
   const { cookies } = req;
   if (!cookies?.jwtAccessToken) return next(createError(204, "No content."));
   res

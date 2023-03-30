@@ -13,11 +13,18 @@ import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
 import newRequest from "../utils/newRequest";
 import AuthModal from "./AuthModal";
+import { useDispatch } from "react-redux";
+import { logOut } from "../state/authSlice";
+import useAuth from "../hooks/useAuth";
 
 const Header = () => {
   const [modalType, setModalType] = useState("");
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const user = useAuth();
 
   const handleClickOutside = () => {
     setOpen(false);
@@ -26,6 +33,7 @@ const Header = () => {
   const clickLogin = () => {
     setModalType("Log In");
     setModalOpen(!modalOpen);
+    setOpen(false);
   };
 
   const clickSignUp = () => {
@@ -33,17 +41,19 @@ const Header = () => {
     setModalOpen(!modalOpen);
   };
 
-  const ref = useOutsideClick(handleClickOutside);
-
   const handleLogout = async () => {
     try {
       await newRequest.post("/auth/logout");
+      dispatch(logOut());
       /* localStorage.setItem("currentUser", null);
       navigate("/"); */
+      setOpen(false);
     } catch (err) {
       console.log(err);
     }
   };
+
+  const ref = useOutsideClick(handleClickOutside);
 
   return (
     <header className="sticky top-0 bg-neutral-900 z-50 h-12">
@@ -89,46 +99,63 @@ const Header = () => {
             />
           </form>
         </div>
-        {/* <div className="flex gap-4 text-neutral-300">
-        <AiOutlineMessage size="1.4rem" />
-        <AiOutlineBell size="1.4rem" />
-        <AiOutlinePlus size="1.4rem" />
-      </div> */}
-        <div className="hidden sm:flex gap-2">
-          <Button onClick={clickLogin}>Log In</Button>
-          <Button outline={true} onClick={clickSignUp}>
-            Sign Up
-          </Button>
-          {/* <Button outline={1}>Sign Up</Button> */}
-        </div>
-        <button
-          className="flex items-center gap-2 px-2 py-1 border border-transparent hover:border-neutral-700 rounded-md"
-          onClick={() => setOpen(!open)}
-          ref={ref}
-        >
-          {/*  <img
-          src="./img/noavatar.png"
-          alt="User profile picture."
-          className="m-1 h-6 rounded-full object-cover"
-        /> */}
-          <AiOutlineUser className="text-neutral-500" size="1.5rem" />
-          <AiOutlineDown className="text-neutral-500" size=".75rem" />
-        </button>
-        {open && (
-          <div className="absolute top-8 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden">
-            {/**links */}
-            <button className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black">
-              <AiOutlineLogin size="1.2rem" /> Log In / Sign Up
-            </button>
-            <button
-              className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
-              onClick={handleLogout}
-            >
-              <AiOutlineLogout size="1.2rem" />
-              Logout
-            </button>
+        {!!user ? (
+          <div className="flex gap-4 text-neutral-300">
+            <AiOutlineMessage size="1.4rem" />
+            <AiOutlineBell size="1.4rem" />
+            <AiOutlinePlus size="1.4rem" />
+          </div>
+        ) : (
+          <div className="hidden sm:flex gap-2">
+            <Button onClick={clickLogin}>Log In</Button>
+            <Button outline={true} onClick={clickSignUp}>
+              Sign Up
+            </Button>
+            {/* <Button outline={1}>Sign Up</Button> */}
           </div>
         )}
+
+        <div ref={ref}>
+          <button
+            className="flex items-center gap-2 px-2 py-1 border border-transparent ml-2 hover:border-neutral-700 rounded-md"
+            onClick={() => setOpen(!open)}
+          >
+            {!!user ? (
+              <>
+                <img
+                  src="./img/noavatar.png"
+                  alt="User profile picture."
+                  className="m-1 h-6 rounded-full object-cover"
+                />
+                <p className="text-neutral-300">{user?.username}</p>
+              </>
+            ) : (
+              <AiOutlineUser className="text-neutral-500" size="1.5rem" />
+            )}
+            <AiOutlineDown className="text-neutral-500" size=".75rem" />
+          </button>
+          {open && (
+            <div className="absolute top-11 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden">
+              {/**links */}
+              {!!user ? (
+                <button
+                  className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
+                  onClick={handleLogout}
+                >
+                  <AiOutlineLogout size="1.2rem" />
+                  Logout
+                </button>
+              ) : (
+                <button
+                  className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
+                  onClick={clickLogin}
+                >
+                  <AiOutlineLogin size="1.2rem" /> Log In / Sign Up
+                </button>
+              )}
+            </div>
+          )}
+        </div>
       </div>
       {modalOpen && (
         <AuthModal

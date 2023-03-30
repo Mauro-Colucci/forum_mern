@@ -3,6 +3,8 @@ import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
 import newRequest from "../utils/newRequest";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../state/authSlice";
 //import { useNavigate } from "react-router-dom";
 
 const AuthModal = ({ onClick, modalType, setModalType }) => {
@@ -11,6 +13,8 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const dispatch = useDispatch();
 
   //const navigate = useNavigate();
 
@@ -22,10 +26,13 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
     e.preventDefault();
     try {
       if (modalType === "Log In") {
-        const res = await newRequest.post("/auth/login", {
+        const { data } = await newRequest.post("/auth/login", {
           username,
           password,
         });
+        //sets modalOpen to false
+        onClick();
+        dispatch(setCredentials({ data }));
         /* localStorage.setItem("currentUser", JSON.stringify(res.data));
       navigate("/"); */
       }
@@ -36,9 +43,8 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
           password,
           confirmPassword,
         });
+        setModalType("Log In");
       }
-      //sets modalOpen to false
-      onClick();
     } catch (err) {
       console.error(err);
       setError(err.response.data);
