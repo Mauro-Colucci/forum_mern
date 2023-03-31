@@ -37,7 +37,7 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
       navigate("/"); */
       }
       if (modalType === "Sign Up") {
-        const res = await newRequest.post("/auth/register", {
+        await newRequest.post("/auth/register", {
           username,
           email,
           password,

@@ -16,6 +16,7 @@ import AuthModal from "./AuthModal";
 import { useDispatch } from "react-redux";
 import { logOut } from "../state/authSlice";
 import useAuth from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [modalType, setModalType] = useState("");
@@ -58,7 +59,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 bg-neutral-900 z-50 h-12">
       <div className="px-5 relative flex items-center h-full border-b border-neutral-700">
-        <div className="flex gap-2 items-center">
+        <Link to="/" className="flex gap-2 items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
@@ -88,7 +89,7 @@ const Header = () => {
               <path d="M7.68,6.53a1.19,1.19,0,0,0-1-1.18A4.56,4.56,0,0,0,2.39,6.91V6.75A1.2,1.2,0,0,0,0,6.75v9.77a1.23,1.23,0,0,0,1.12,1.24,1.19,1.19,0,0,0,1.26-1.1.66.66,0,0,0,0-.14v-5A3.62,3.62,0,0,1,5.81,7.7a4.87,4.87,0,0,1,.54,0h.24A1.18,1.18,0,0,0,7.68,6.53Z"></path>
             </g>
           </svg>
-        </div>
+        </Link>
         <div className="flex grow">
           <form className="bg-neutral-800 h-10 mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-300 border border-neutral-700 max-w-2xl">
             <AiOutlineSearch className="text-neutral-500" size="1.4rem" />
@@ -123,7 +124,7 @@ const Header = () => {
             {!!user ? (
               <>
                 <img
-                  src="./img/noavatar.png"
+                  src="/img/noavatar.png"
                   alt="User profile picture."
                   className="m-1 h-6 rounded-full object-cover"
                 />

@@ -4,9 +4,10 @@ import connectDB from "./config/connectDB.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
+import errorHandler from "./middleware/errorHandler.js";
 
 import authRoutes from "./routes/auth.js";
-import errorHandler from "./middleware/errorHandler.js";
+import commentsRoutes from "./routes/comments.js";
 
 dotenv.config({ path: "./config/.env" });
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/comments", commentsRoutes);
 
 app.use(errorHandler);
 

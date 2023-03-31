@@ -1,42 +1,31 @@
-const Post = () => {
+import moment from "moment";
+import { Link } from "react-router-dom";
+
+const Post = ({ _id, title, body, author, createdAt, full = false }) => {
   return (
-    <div className="border bg-neutral-800 border-neutral-700 max-w-7xl mx-auto rounded-md p-2">
-      <h6 className="text-neutral-500 text-sm mb-1">
-        Posted by u/gwenene 5 eons ago
+    <div
+      className={`border bg-neutral-800 border-neutral-700 rounded-md p-2 ${
+        !full && "hover:border-neutral-400"
+      }`}
+    >
+      <h6 className="text-neutral-500 text-xs mb-1">
+        Posted by u/{author} {moment(createdAt).fromNow()}
       </h6>
-      <h2 className="text-xl mb-3 text-neutral-300">
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Placeat.
-      </h2>
-      <p className="text-sm leading-6 text-neutral-400">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit dolor
-        nobis aliquam reprehenderit praesentium, temporibus veniam? Voluptas
-        officiis totam deserunt repudiandae ducimus facilis earum quis itaque
-        nesciunt accusamus sit sapiente odio magnam corporis, praesentium
-        possimus quisquam autem, eveniet hic aut nostrum dolorum ipsa ut.
-        Assumenda sequi enim ab nostrum nesciunt? Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Fugit dolor nobis aliquam reprehenderit
-        praesentium, temporibus veniam? Voluptas officiis totam deserunt
-        repudiandae ducimus facilis earum quis itaque nesciunt accusamus sit
-        sapiente odio magnam corporis, praesentium possimus quisquam autem,
-        eveniet hic aut nostrum dolorum ipsa ut. Assumenda sequi enim ab nostrum
-        nesciunt? Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
-        dolor nobis aliquam reprehenderit praesentium, temporibus veniam?
-        Voluptas officiis totam deserunt repudiandae ducimus facilis earum quis
-        itaque nesciunt accusamus sit sapiente odio magnam corporis, praesentium
-        possimus quisquam autem, eveniet hic aut nostrum dolorum ipsa ut.
-        Assumenda sequi enim ab nostrum nesciunt? Lorem ipsum dolor sit amet
-        consectetur adipisicing elit. Fugit dolor nobis aliquam reprehenderit
-        praesentium, temporibus veniam? Voluptas officiis totam deserunt
-        repudiandae ducimus facilis earum quis itaque nesciunt accusamus sit
-        sapiente odio magnam corporis, praesentium possimus quisquam autem,
-        eveniet hic aut nostrum dolorum ipsa ut. Assumenda sequi enim ab nostrum
-        nesciunt? Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit
-        dolor nobis aliquam reprehenderit praesentium, temporibus veniam?
-        Voluptas officiis totam deserunt repudiandae ducimus facilis earum quis
-        itaque nesciunt accusamus sit sapiente odio magnam corporis, praesentium
-        possimus quisquam autem, eveniet hic aut nostrum dolorum ipsa ut.
-        Assumenda sequi enim ab nostrum nesciunt?
-      </p>
+      {full ? (
+        <>
+          <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+          <div className="pt-1 px-2 pb-2">
+            <p className="text-sm leading-6 text-neutral-400">{body}</p>
+          </div>
+        </>
+      ) : (
+        <Link to={`/comments/${_id}`} className="cursor-pointer">
+          <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+          <div className="mask-linear-gradient overflow-hidden max-h-60 pt-1 px-2 pb-2">
+            <p className="text-sm leading-6 text-neutral-400">{body}</p>
+          </div>
+        </Link>
+      )}
     </div>
   );
 };

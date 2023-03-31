@@ -3,14 +3,14 @@ const SubHeader = () => {
     <section className="bg-neutral-800">
       <div className="h-20">
         <img
-          src="./img/banner.jpg"
+          src="/img/banner.jpg"
           className="h-full w-full object-cover"
           alt=""
         />
       </div>
       <div className="flex mx-auto max-w-7xl">
         <img
-          src="./img/banana.jpg"
+          src="/img/banana.jpg"
           alt=""
           className="relative h-20 w-20 -top-3 bg-white rounded-full overflow-hidden mx-6 border-[4px] border-transparent"
         />

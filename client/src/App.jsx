@@ -1,29 +1,19 @@
-import PostForm from "./components/PostForm";
 import Header from "./components/Header";
-import SubHeader from "./components/SubHeader";
-import Post from "./components/Post";
 import {
   RouterProvider,
   Outlet,
   createBrowserRouter,
   ScrollRestoration,
 } from "react-router-dom";
-import useAuth from "./hooks/useAuth";
+import Subreddit from "./pages/Subreddit";
+import PostPage from "./pages/PostPage";
 
 const Layout = () => {
-  const user = useAuth();
-
   return (
     <>
       <Header />
-      {/*  <ScrollRestoration />
-      <Outlet /> */}
-      {/**will create routes for this and remove from layout. */}
-      <SubHeader />
-      <div className="flex flex-col gap-4 py-4">
-        {!!user && <PostForm />}
-        <Post />
-      </div>
+      <ScrollRestoration />
+      <Outlet />
     </>
   );
 };
@@ -33,7 +23,16 @@ function App() {
     {
       path: "/",
       element: <Layout />,
-      children: [],
+      children: [
+        {
+          path: "/",
+          element: <Subreddit />,
+        },
+        {
+          path: "/comments/:id",
+          element: <PostPage />,
+        },
+      ],
     },
   ]);
   return <RouterProvider router={router} />;
