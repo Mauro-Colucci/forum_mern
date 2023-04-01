@@ -1,7 +1,8 @@
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Post = ({ _id, title, body, author, createdAt, full = false }) => {
+  const location = useLocation();
   return (
     <div
       className={`border bg-neutral-800 border-neutral-700 rounded-md p-2 ${
@@ -19,7 +20,11 @@ const Post = ({ _id, title, body, author, createdAt, full = false }) => {
           </div>
         </>
       ) : (
-        <Link to={`/comments/${_id}`} className="cursor-pointer">
+        <Link
+          to={`/comments/${_id}`}
+          state={{ background: location }}
+          className="cursor-pointer"
+        >
           <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
           <div className="mask-linear-gradient overflow-hidden max-h-60 pt-1 px-2 pb-2">
             <p className="text-sm leading-6 text-neutral-400">{body}</p>

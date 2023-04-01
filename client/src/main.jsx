@@ -6,6 +6,7 @@ import { persistor, store } from "./state/store";
 import "./index.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </QueryClientProvider>
       </PersistGate>
     </Provider>

@@ -1,10 +1,5 @@
 import Header from "./components/Header";
-import {
-  RouterProvider,
-  Outlet,
-  createBrowserRouter,
-  ScrollRestoration,
-} from "react-router-dom";
+import { Outlet, Routes, Route, useLocation } from "react-router-dom";
 import Subreddit from "./pages/Subreddit";
 import PostPage from "./pages/PostPage";
 
@@ -12,14 +7,16 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <ScrollRestoration />
+      {/* <ScrollRestoration /> */}
       <Outlet />
     </>
   );
 };
 
 function App() {
-  const router = createBrowserRouter([
+  const location = useLocation();
+  const background = location.state && location.state.background;
+  /*  const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
@@ -35,7 +32,22 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router} />; */
+  return (
+    <>
+      <Routes location={background || location}>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Subreddit />} />
+          <Route path="/comments/:id" element={<PostPage />} />
+        </Route>
+      </Routes>
+      {background && (
+        <Routes>
+          <Route path="/comments/:id" element={<PostPage />} />
+        </Routes>
+      )}
+    </>
+  );
 }
 
 export default App;
