@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const Post = ({ _id, title, body, author, createdAt, full = false }) => {
   const location = useLocation();
-  console.log(location);
   return (
     <div
       className={`${

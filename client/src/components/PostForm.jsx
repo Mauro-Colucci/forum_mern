@@ -16,7 +16,7 @@ const PostForm = () => {
           type="text"
           className=" bg-neutral-700 border border-neutral-600 rounded-md outline-none py-2 px-3 text-sm w-full"
           placeholder="New Post"
-          onClick={() => setModalOpen((prev) => !prev)}
+          onFocus={() => setModalOpen((prev) => !prev)}
         />
       </div>
       {modalOpen && <PostFormModal onClick={() => setModalOpen(false)} />}

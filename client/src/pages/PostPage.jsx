@@ -35,7 +35,11 @@ const PostPage = () => {
         }
         ref={ref}
       >
-        <div className="flex flex-col gap-4 py-4 max-w-5xl mx-auto">
+        <div
+          className={`flex flex-col gap-4 max-w-5xl mx-auto ${
+            !state ? "pt-16" : "py-4"
+          }`}
+        >
           {!!state && (
             <button
               className="text-neutral-300 flex items-center hover:bg-neutral-600 w-fit px-2 rounded-full text-sm"
