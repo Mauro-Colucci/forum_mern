@@ -27,10 +27,6 @@ const Header = () => {
 
   const user = useAuth();
 
-  const handleClickOutside = () => {
-    setOpen(false);
-  };
-
   const clickLogin = () => {
     setModalType("Log In");
     setModalOpen(!modalOpen);
@@ -46,18 +42,16 @@ const Header = () => {
     try {
       await newRequest.post("/auth/logout");
       dispatch(logOut());
-      /* localStorage.setItem("currentUser", null);
-      navigate("/"); */
       setOpen(false);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const ref = useOutsideClick(handleClickOutside);
+  const ref = useOutsideClick(() => setOpen(false));
 
   return (
-    <header className="sticky top-0 bg-neutral-900 z-50 h-12">
+    <header className="fixed right-0 left-0 top-0 bg-neutral-900 z-50 h-12">
       <div className="px-5 relative flex items-center h-full border-b border-neutral-700">
         <Link to="/" className="flex gap-2 items-center">
           <svg
@@ -90,7 +84,7 @@ const Header = () => {
             </g>
           </svg>
         </Link>
-        <div className="flex grow">
+        <div className="flex grow ml-2">
           <form className="bg-neutral-800 h-10 mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-300 border border-neutral-700 max-w-2xl">
             <AiOutlineSearch className="text-neutral-500" size="1.4rem" />
             <input
@@ -101,7 +95,7 @@ const Header = () => {
           </form>
         </div>
         {!!user ? (
-          <div className="flex gap-4 text-neutral-300">
+          <div className="hidden sm:flex gap-4 text-neutral-300">
             <AiOutlineMessage size="1.4rem" />
             <AiOutlineBell size="1.4rem" />
             <AiOutlinePlus size="1.4rem" />

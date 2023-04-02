@@ -1,6 +1,6 @@
 const SubHeader = () => {
   return (
-    <section className="bg-neutral-800">
+    <section className="bg-neutral-800 pt-12">
       <div className="h-20">
         <img
           src="/img/banner.jpg"

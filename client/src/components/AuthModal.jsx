@@ -5,6 +5,7 @@ import newRequest from "../utils/newRequest";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../state/authSlice";
+import { AiOutlineClose } from "react-icons/ai";
 //import { useNavigate } from "react-router-dom";
 
 const AuthModal = ({ onClick, modalType, setModalType }) => {
@@ -33,8 +34,6 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
         //sets modalOpen to false
         onClick();
         dispatch(setCredentials({ data }));
-        /* localStorage.setItem("currentUser", JSON.stringify(res.data));
-      navigate("/"); */
       }
       if (modalType === "Sign Up") {
         await newRequest.post("/auth/register", {
@@ -62,7 +61,7 @@ const AuthModal = ({ onClick, modalType, setModalType }) => {
           <div className="flex items-center justify-between">
             <h1 className="text-2xl">{modalType}</h1>
             <span className="cursor-pointer" onClick={onClick}>
-              X
+              <AiOutlineClose />
             </span>
           </div>
           <form className="flex flex-col gap-4 w-full" onSubmit={handleSubmit}>

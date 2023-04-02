@@ -3,11 +3,12 @@ import { Link, useLocation } from "react-router-dom";
 
 const Post = ({ _id, title, body, author, createdAt, full = false }) => {
   const location = useLocation();
+  console.log(location);
   return (
     <div
-      className={`border bg-neutral-800 border-neutral-700 rounded-md p-2 ${
-        !full && "hover:border-neutral-400"
-      }`}
+      className={`${
+        location.state ? "" : "border border-neutral-700 bg-neutral-800"
+      } rounded-md p-2 ${!full && "hover:border-neutral-400"}`}
     >
       <h6 className="text-neutral-500 text-xs mb-1">
         Posted by u/{author} {moment(createdAt).fromNow()}

@@ -2,7 +2,6 @@ import PostForm from "../components/PostForm";
 import Posts from "../components/Posts";
 import SubHeader from "../components/SubHeader";
 import useAuth from "../hooks/useAuth";
-//import CreatePost from "../components/CreatePost";
 
 const Subreddit = () => {
   const user = useAuth();
@@ -12,7 +11,6 @@ const Subreddit = () => {
       <SubHeader />
       <div className="flex flex-col gap-4 py-4 max-w-5xl mx-auto">
         {!!user && <PostForm />}
-        {/* <CreatePost /> */}
         <Posts />
       </div>
     </>
