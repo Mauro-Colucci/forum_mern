@@ -18,6 +18,7 @@ const PostFormModal = ({ onClick }) => {
     mutationFn: (post) => newRequest.post("/comments", post),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries(post);
+      //onClick();
       navigate(`/comments/${data._id}`);
     },
   });

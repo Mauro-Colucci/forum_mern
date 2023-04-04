@@ -1,8 +1,19 @@
 import moment from "moment";
 import { Link, useLocation } from "react-router-dom";
+import CommentForm from "./CommentForm";
+import Comments from "./Comments";
 
-const Post = ({ _id, title, body, author, createdAt, full = false }) => {
+const Post = ({
+  _id,
+  title,
+  body,
+  author,
+  createdAt,
+  full = false,
+  comments,
+}) => {
   const location = useLocation();
+
   return (
     <div
       className={`${
@@ -18,6 +29,10 @@ const Post = ({ _id, title, body, author, createdAt, full = false }) => {
           <div className="pt-1 px-2 pb-2">
             <p className="text-sm leading-6 text-neutral-400">{body}</p>
           </div>
+          <hr className="border-neutral-400 my-4" />
+          <CommentForm rootId={_id} parentId={_id} />
+          <hr className="border-neutral-400 my-4" />
+          <Comments parentId={_id} rootId={_id} comments={comments} />
         </>
       ) : (
         <Link

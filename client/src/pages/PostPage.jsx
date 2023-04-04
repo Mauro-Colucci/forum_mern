@@ -13,8 +13,14 @@ const PostPage = () => {
   const navigate = useNavigate();
 
   const { isLoading, data } = useQuery({
-    queryKey: [id, "post"],
+    queryKey: [id, "post", "comment"],
     queryFn: () => newRequest.get(`/comments/${id}`).then((res) => res.data),
+  });
+
+  const { data: comments } = useQuery({
+    queryKey: ["comment", id],
+    queryFn: () =>
+      newRequest.get(`/comments/root/${id}`).then((res) => res.data),
   });
 
   const goBack = () => navigate(-1);
@@ -31,7 +37,7 @@ const PostPage = () => {
       <div
         className={
           !!state &&
-          "bg-neutral-900 text-neutral-300 px-6 py-2 w-3/4 md:w-1/2 rounded-sm border mx-auto border-neutral-800"
+          "bg-neutral-900 text-neutral-300 px-6 py-2 w-3/4 md:w-1/2 rounded-sm border mx-auto border-neutral-800 relative"
         }
         ref={ref}
       >
@@ -41,14 +47,22 @@ const PostPage = () => {
           }`}
         >
           {!!state && (
-            <button
-              className="text-neutral-300 flex items-center hover:bg-neutral-600 w-fit px-2 rounded-full text-sm"
-              onClick={goBack}
-            >
-              <AiOutlineClose size="1.1rem" /> Close
-            </button>
+            <div className="flex justify-end bg-black absolute top-0 left-0 w-full p-3">
+              <button
+                className="text-neutral-300 flex items-center hover:bg-neutral-600 w-fit px-2 py-1 rounded-full text-sm"
+                onClick={goBack}
+              >
+                <AiOutlineClose size="1.1rem" /> Close
+              </button>
+            </div>
           )}
-          {isLoading ? "Loading..." : <Post {...data} full />}
+          {isLoading ? (
+            "Loading..."
+          ) : (
+            <div className={!!state && "mt-10"}>
+              <Post {...data} comments={comments} full />
+            </div>
+          )}
         </div>
       </div>
     </div>
