@@ -2,6 +2,8 @@ import { BiMessage } from "react-icons/Bi";
 import moment from "moment";
 import CommentForm from "./CommentForm";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 
 const Comments = (props) => {
   const comments = props.comments?.filter(
@@ -25,7 +27,10 @@ const Comments = (props) => {
               </span>
             </div>
             <div className="border-l-2 border-neutral-500 px-3 pt-3 ml-4">
-              <p className="pb-2 text-neutral-300">{comment.body}</p>
+              <p className="pb-2 text-neutral-300">
+                {/* {comment.body} */}
+                <ReactMarkdown remarkPlugins={gfm} children={comment.body} />
+              </p>
               <button
                 className="flex gap-1 items-center text-sm px-2 py-1 mb-2 hover:bg-neutral-700 font-semibold text-neutral-500"
                 onClick={() => setShowForm(comment._id)}

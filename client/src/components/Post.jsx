@@ -2,6 +2,8 @@ import moment from "moment";
 import { Link, useLocation } from "react-router-dom";
 import CommentForm from "./CommentForm";
 import Comments from "./Comments";
+import ReactMarkdown from "react-markdown";
+import gfm from "remark-gfm";
 
 const Post = ({
   _id,
@@ -27,7 +29,10 @@ const Post = ({
         <>
           <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
           <div className="pt-1 px-2 pb-2">
-            <p className="text-sm leading-6 text-neutral-400">{body}</p>
+            <p className="text-sm leading-6 text-neutral-400">
+              {/* {body} */}
+              <ReactMarkdown remarkPlugins={gfm} children={body} />
+            </p>
           </div>
           <hr className="border-neutral-400 my-4" />
           <CommentForm rootId={_id} parentId={_id} />
