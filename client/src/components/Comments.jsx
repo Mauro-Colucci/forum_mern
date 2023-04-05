@@ -4,6 +4,7 @@ import CommentForm from "./CommentForm";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
+import Voting from "./Voting";
 
 const Comments = (props) => {
   const comments = props.comments?.filter(
@@ -31,13 +32,16 @@ const Comments = (props) => {
                 {/* {comment.body} */}
                 <ReactMarkdown remarkPlugins={gfm} children={comment.body} />
               </p>
-              <button
-                className="flex gap-1 items-center text-sm px-2 py-1 mb-2 hover:bg-neutral-700 font-semibold text-neutral-500"
-                onClick={() => setShowForm(comment._id)}
-              >
-                <BiMessage />
-                Reply
-              </button>
+              <div className="flex gap-2 mb-2">
+                <Voting commentId={comment._id} />
+                <button
+                  className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
+                  onClick={() => setShowForm(comment._id)}
+                >
+                  <BiMessage />
+                  Reply
+                </button>
+              </div>
               {showForm === comment._id && (
                 <CommentForm
                   closeComment={() => setShowForm(false)}
