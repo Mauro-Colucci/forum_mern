@@ -2,11 +2,17 @@ import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../utils/newRequest";
 
-const Voting = () => {
+const Voting = ({ commentId }) => {
   const queryClient = useQueryClient();
 
+  /* 
+      if (!state.currentVideo.likes.includes(action.payload)) {
+        state.currentVideo.likes.push(action.payload);
+        state.currentVideo.dislikes.splice(state.currentVideo.dislikes.findIndex(userId => userId === action.payload), 1);
+  */
+
   const mutation = useMutation({
-    mutationFn: () => newRequest.post("/comments", comment),
+    mutationFn: () => newRequest.post(`/vote/${commentId}`, comment),
     onSuccess: () => queryClient.invalidateQueries(["vote"]),
   });
 
