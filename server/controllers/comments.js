@@ -39,3 +39,33 @@ export const getComments = async (req, res, next) => {
     next(err);
   }
 };
+
+export const upVote = async (req, res, next) => {
+  const id = req.userId;
+  const { commentId } = req.params;
+
+  try {
+    await Comment.findByIdAndUpdate(commentId, {
+      $addToSet: { upVotes: id },
+      $pull: { downVotes: id },
+    });
+    res.status(200).send("comment upvoted");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const downVote = async (req, res, next) => {
+  const id = req.userId;
+  const { commentId } = req.params;
+
+  try {
+    await Comment.findByIdAndUpdate(commentId, {
+      $addToSet: { downVotes: id },
+      $pull: { upVotes: id },
+    });
+    res.status(200).send("comment downvoted");
+  } catch (err) {
+    next(err);
+  }
+};

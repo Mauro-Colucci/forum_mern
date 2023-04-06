@@ -28,12 +28,20 @@ const Comments = (props) => {
               </span>
             </div>
             <div className="border-l-2 border-neutral-500 px-3 pt-3 ml-4">
-              <p className="pb-2 text-neutral-300">
-                {/* {comment.body} */}
-                <ReactMarkdown remarkPlugins={gfm} children={comment.body} />
-              </p>
+              {/* <p className="pb-2 text-neutral-300"> */}
+              {/* {comment.body} */}
+              <ReactMarkdown
+                className="pb-2 text-neutral-300"
+                remarkPlugins={[gfm]}
+                children={comment.body}
+              />
+              {/* </p> */}
               <div className="flex gap-2 mb-2">
-                <Voting commentId={comment._id} />
+                <Voting
+                  commentId={comment._id}
+                  upVotes={comment.upVotes}
+                  downVotes={comment.downVotes}
+                />
                 <button
                   className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
                   onClick={() => setShowForm(comment._id)}

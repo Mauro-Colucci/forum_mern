@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 const Posts = () => {
   const { isLoading, data } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["comment"],
     queryFn: () => newRequest.get("/comments").then((res) => res.data),
   });
 

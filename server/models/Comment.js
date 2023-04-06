@@ -19,6 +19,14 @@ const CommentSchema = new mongoose.Schema(
     rootId: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    upVotes: {
+      type: [String],
+      default: [],
+    },
+    downVotes: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

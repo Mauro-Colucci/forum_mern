@@ -4,6 +4,7 @@ import CommentForm from "./CommentForm";
 import Comments from "./Comments";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
+import Voting from "./Voting";
 
 const Post = ({
   _id,
@@ -13,6 +14,8 @@ const Post = ({
   createdAt,
   full = false,
   comments,
+  upVotes,
+  downVotes,
 }) => {
   const location = useLocation();
 
@@ -20,37 +23,46 @@ const Post = ({
     <div
       className={`${
         location.state ? "" : "border border-neutral-700 bg-neutral-800"
-      } rounded-md p-2 ${!full && "hover:border-neutral-400"}`}
+      } rounded-md p-2 ${
+        !full && "hover:border-neutral-400"
+      } flex items-start gap-4`}
     >
-      <h6 className="text-neutral-500 text-xs mb-1">
-        Posted by u/{author} {moment(createdAt).fromNow()}
-      </h6>
-      {full ? (
-        <>
-          <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
-          <div className="pt-1 px-2 pb-2">
-            <p className="text-sm leading-6 text-neutral-400">
+      <Voting commentId={_id} upVotes={upVotes} downVotes={downVotes} col />
+      <div className="w-full">
+        <h6 className="text-neutral-500 text-xs mb-1">
+          Posted by u/{author} {moment(createdAt).fromNow()}
+        </h6>
+        {full ? (
+          <>
+            <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+            <div className="pt-1 px-2 pb-2">
+              {/* <p className="text-sm leading-6 text-neutral-400"> */}
               {/* {body} */}
-              <ReactMarkdown remarkPlugins={gfm} children={body} />
-            </p>
-          </div>
-          <hr className="border-neutral-400 my-4" />
-          <CommentForm rootId={_id} parentId={_id} />
-          <hr className="border-neutral-400 my-4" />
-          <Comments parentId={_id} rootId={_id} comments={comments} />
-        </>
-      ) : (
-        <Link
-          to={`/comments/${_id}`}
-          state={{ background: location }}
-          className="cursor-pointer"
-        >
-          <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
-          <div className="mask-linear-gradient overflow-hidden max-h-60 pt-1 px-2 pb-2">
-            <p className="text-sm leading-6 text-neutral-400">{body}</p>
-          </div>
-        </Link>
-      )}
+              <ReactMarkdown
+                className="text-sm leading-6 text-neutral-400"
+                remarkPlugins={[gfm]}
+                children={body}
+              />
+              {/* </p> */}
+            </div>
+            <hr className="border-neutral-400 my-4" />
+            <CommentForm rootId={_id} parentId={_id} />
+            <hr className="border-neutral-400 my-4" />
+            <Comments parentId={_id} rootId={_id} comments={comments} />
+          </>
+        ) : (
+          <Link
+            to={`/comments/${_id}`}
+            state={{ background: location }}
+            className="cursor-pointer"
+          >
+            <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+            <div className="mask-linear-gradient overflow-hidden max-h-60 pt-1 px-2 pb-2">
+              <p className="text-sm leading-6 text-neutral-400">{body}</p>
+            </div>
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
