@@ -12,13 +12,13 @@ const Post = ({
   body,
   author,
   createdAt,
+  rootId,
   full = false,
   comments,
   upVotes,
   downVotes,
 }) => {
   const location = useLocation();
-
   return (
     <div
       className={`${
@@ -52,7 +52,7 @@ const Post = ({
           </>
         ) : (
           <Link
-            to={`/comments/${_id}`}
+            to={`/comments/${rootId || _id}`}
             state={{ background: location }}
             className="cursor-pointer"
           >

@@ -3,8 +3,17 @@ import Comment from "../models/Comment.js";
 import createError from "../utils/createError.js";
 
 export const getPosts = async (req, res, next) => {
+  const { search } = req.query;
+  const filter = search
+    ? {
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          { body: { $regex: search, $options: "i" } },
+        ],
+      }
+    : { rootId: null };
   try {
-    const posts = await Comment.find({ rootId: null }).sort({ createdAt: -1 });
+    const posts = await Comment.find(filter).sort({ createdAt: -1 });
     res.status(200).send(posts);
   } catch (err) {
     next(err);

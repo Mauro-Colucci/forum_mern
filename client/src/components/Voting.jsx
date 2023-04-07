@@ -5,10 +5,10 @@ import useAuth from "../hooks/useAuth";
 
 const Voting = ({ commentId, upVotes, downVotes, col }) => {
   const user = useAuth();
-  const upVoteClass = upVotes.includes(user.id)
+  const upVoteClass = upVotes.includes(user?.id)
     ? "text-orange-600"
     : "hover:text-neutral-200";
-  const downVoteClass = downVotes.includes(user.id)
+  const downVoteClass = downVotes.includes(user?.id)
     ? "text-orange-600"
     : "hover:text-neutral-200";
   const queryClient = useQueryClient();

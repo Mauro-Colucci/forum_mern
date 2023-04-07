@@ -31,7 +31,7 @@ const PostPage = () => {
     <div
       className={
         !!state &&
-        "h-screen w-full bg-[rgba(0,0,0,.9)] fixed overflow-y-scroll top-12 bottom-0 py-5 left-0 z-50"
+        "w-full bg-[rgba(0,0,0,.9)] fixed overflow-y-scroll top-12 bottom-0 py-5 left-0 z-50"
       }
     >
       <div
@@ -59,7 +59,7 @@ const PostPage = () => {
           {isLoading ? (
             "Loading..."
           ) : (
-            <div className={!!state && "mt-10"}>
+            <div className={!!state && "pt-10"}>
               <Post {...data} comments={comments} full />
             </div>
           )}

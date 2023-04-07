@@ -16,14 +16,26 @@ import AuthModal from "./AuthModal";
 import { useDispatch } from "react-redux";
 import { logOut } from "../state/authSlice";
 import useAuth from "../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [modalType, setModalType] = useState("");
   const [open, setOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate(`/?search=${search}`);
+    setSearch("");
+  };
+  /*
+  await Gig.find( { title: { $regex: q.search, $options: "i" } }).sort({ [q.sort]: -1 });
+  */
 
   const user = useAuth();
 
@@ -85,12 +97,17 @@ const Header = () => {
           </svg>
         </Link>
         <div className="flex grow ml-2">
-          <form className="bg-neutral-800 h-10 mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-300 border border-neutral-700 max-w-2xl">
+          <form
+            className="bg-neutral-800 h-10 mx-auto rounded-full flex items-center grow gap-1 px-2 text-neutral-300 border border-neutral-700 max-w-2xl"
+            onSubmit={handleSearch}
+          >
             <AiOutlineSearch className="text-neutral-500" size="1.4rem" />
             <input
               type="text"
               className="bg-transparent outline-none text-sm w-full"
               placeholder="Search..."
+              onChange={(e) => setSearch(e.target.value)}
+              value={search}
             />
           </form>
         </div>
@@ -103,7 +120,7 @@ const Header = () => {
         ) : (
           <div className="hidden sm:flex gap-2">
             <Button onClick={clickLogin}>Log In</Button>
-            <Button outline={true} onClick={clickSignUp}>
+            <Button outline onClick={clickSignUp}>
               Sign Up
             </Button>
             {/* <Button outline={1}>Sign Up</Button> */}
