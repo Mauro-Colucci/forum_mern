@@ -4,21 +4,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Input from "./Input";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPostOpen } from "../state/modalSlice";
 
-const PostFormModal = ({ onClick }) => {
+const PostFormModal = () => {
   const [post, setPost] = useState({
     title: "",
     body: "",
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (post) => newRequest.post("/comments", post),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries(post);
-      //onClick();
       navigate(`/comments/${data._id}`);
     },
   });
@@ -26,8 +28,6 @@ const PostFormModal = ({ onClick }) => {
   const handlesubmit = (e) => {
     e.preventDefault();
     mutation.mutate(post);
-    /* setPost({ title: "", body: "" });
-    onClick(); */
   };
 
   const handleTitle = (e) => setPost({ ...post, title: e.target.value });
@@ -54,7 +54,7 @@ const PostFormModal = ({ onClick }) => {
             value={post.body}
           />
           <div className="flex gap-2 justify-end">
-            <Button outline onClick={onClick}>
+            <Button outline onClick={() => dispatch(setPostOpen())}>
               Cancel
             </Button>
             <Button>POST</Button>

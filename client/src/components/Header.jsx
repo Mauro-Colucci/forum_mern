@@ -13,22 +13,24 @@ import Button from "./Button";
 import useOutsideClick from "../hooks/useOutsideClick";
 import newRequest from "../utils/newRequest";
 import AuthModal from "./AuthModal";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../state/authSlice";
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import PostFormModal from "./PostFormModal";
+import CreateCommunity from "./CreateCommunity";
+import { setPostOpen } from "../state/modalSlice";
 
 const Header = () => {
   const [modalType, setModalType] = useState("");
   const [open, setOpen] = useState(false);
   const [openAdd, setOpenAdd] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [openLogin, setOpenLogin] = useState(false);
+  const [openCommunity, setOpenCommunity] = useState(false);
   const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
-
+  const postFormModal = useSelector((state) => state.modal.isPostFormOpen);
   const navigate = useNavigate();
 
   const handleSearch = (e) => {
@@ -36,9 +38,6 @@ const Header = () => {
     navigate(`/?search=${search}`);
     setSearch("");
   };
-  /*
-  await Gig.find( { title: { $regex: q.search, $options: "i" } }).sort({ [q.sort]: -1 });
-  */
 
   const user = useAuth();
 
@@ -127,12 +126,21 @@ const Header = () => {
                 <div className="absolute top-8 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden">
                   <button
                     className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
-                    onClick={() => setOpenLogin((prev) => !prev)}
+                    onClick={() => {
+                      dispatch(setPostOpen());
+                      setOpenAdd(false);
+                    }}
                   >
                     <AiOutlinePlus size="1.2rem" />
                     Create Post
                   </button>
-                  <button className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black">
+                  <button
+                    className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
+                    onClick={() => {
+                      setOpenCommunity((prev) => !prev);
+                      setOpenAdd(false);
+                    }}
+                  >
                     <AiOutlinePlus size="1.2rem" />
                     Create Community
                   </button>
@@ -198,7 +206,10 @@ const Header = () => {
           onClick={() => setModalOpen(false)}
         />
       )}
-      {openLogin && <PostFormModal onClick={() => setOpenLogin(false)} />}
+      {postFormModal && <PostFormModal />}
+      {openCommunity && (
+        <CreateCommunity onClick={() => setOpenCommunity(false)} />
+      )}
     </header>
   );
 };

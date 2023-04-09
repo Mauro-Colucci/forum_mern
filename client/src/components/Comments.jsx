@@ -21,13 +21,17 @@ const Comments = (props) => {
         return (
           <div key={comment._id}>
             <div className="flex gap-2 items-center text-sm mb-1">
-              <div className="bg-blue-300 w-10 h-10 rounded-full" />
+              <img
+                src="/img/noavatar.png"
+                alt="User profile picture."
+                className="h-8 w-8 rounded-full object-cover"
+              />
               <span className="text-neutral-300">{comment.author}</span>
               <span className="text-neutral-400">
                 - {moment(comment.createdAt).fromNow()}
               </span>
             </div>
-            <div className="border-l-2 border-neutral-500 px-3 pt-3 ml-4">
+            <div className="border-l border-neutral-500 px-3 pt-3 ml-4">
               {/* <p className="pb-2 text-neutral-300"> */}
               {/* {comment.body} */}
               <ReactMarkdown
