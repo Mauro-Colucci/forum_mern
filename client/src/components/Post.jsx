@@ -5,6 +5,7 @@ import Comments from "./Comments";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import Voting from "./Voting";
+import useAuth from "../hooks/useAuth";
 
 const Post = ({
   _id,
@@ -19,6 +20,8 @@ const Post = ({
   downVotes,
 }) => {
   const location = useLocation();
+  const user = useAuth();
+
   return (
     <div
       className={`${
@@ -45,8 +48,12 @@ const Post = ({
               />
               {/* </p> */}
             </div>
-            <hr className="border-neutral-400 my-4" />
-            <CommentForm rootId={_id} parentId={_id} />
+            {!!user && (
+              <>
+                <hr className="border-neutral-400 my-4" />
+                <CommentForm rootId={_id} parentId={_id} />
+              </>
+            )}
             <hr className="border-neutral-400 my-4" />
             <Comments parentId={_id} rootId={_id} comments={comments} />
           </>

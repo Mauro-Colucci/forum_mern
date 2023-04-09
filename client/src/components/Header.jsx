@@ -17,11 +17,14 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../state/authSlice";
 import useAuth from "../hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
+import PostFormModal from "./PostFormModal";
 
 const Header = () => {
   const [modalType, setModalType] = useState("");
   const [open, setOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
   const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
@@ -61,6 +64,7 @@ const Header = () => {
   };
 
   const ref = useOutsideClick(() => setOpen(false));
+  const addReff = useOutsideClick(() => setOpenAdd(false));
 
   return (
     <header className="fixed right-0 left-0 top-0 bg-neutral-900 z-50 h-12">
@@ -112,10 +116,29 @@ const Header = () => {
           </form>
         </div>
         {!!user ? (
-          <div className="hidden sm:flex gap-4 text-neutral-300">
+          <div className="hidden sm:flex items-center gap-4 text-neutral-300">
             <AiOutlineMessage size="1.4rem" />
             <AiOutlineBell size="1.4rem" />
-            <AiOutlinePlus size="1.4rem" />
+            <div ref={addReff} className="relative flex">
+              <button onClick={() => setOpenAdd(!openAdd)}>
+                <AiOutlinePlus size="1.4rem" />
+              </button>
+              {openAdd && (
+                <div className="absolute top-8 right-0 bg-neutral-900 border border-neutral-700 z-10 rounded-md text-neutral-400 overflow-hidden">
+                  <button
+                    className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black"
+                    onClick={() => setOpenLogin((prev) => !prev)}
+                  >
+                    <AiOutlinePlus size="1.2rem" />
+                    Create Post
+                  </button>
+                  <button className="flex items-center gap-2 w-48 py-2 px-3 text-sm hover:bg-neutral-300 hover:text-black">
+                    <AiOutlinePlus size="1.2rem" />
+                    Create Community
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="hidden sm:flex gap-2">
@@ -123,7 +146,6 @@ const Header = () => {
             <Button outline onClick={clickSignUp}>
               Sign Up
             </Button>
-            {/* <Button outline={1}>Sign Up</Button> */}
           </div>
         )}
 
@@ -176,6 +198,7 @@ const Header = () => {
           onClick={() => setModalOpen(false)}
         />
       )}
+      {openLogin && <PostFormModal onClick={() => setOpenLogin(false)} />}
     </header>
   );
 };
