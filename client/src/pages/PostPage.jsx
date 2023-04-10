@@ -30,14 +30,16 @@ const PostPage = () => {
   return (
     <div
       className={
-        !!state &&
-        "w-full bg-[rgba(0,0,0,.9)] fixed overflow-y-scroll top-12 bottom-0 py-5 left-0 z-50"
+        !!state
+          ? "w-full bg-[rgba(0,0,0,.9)] fixed overflow-y-scroll top-12 bottom-0 py-5 left-0 z-50"
+          : ""
       }
     >
       <div
         className={
-          !!state &&
-          "bg-neutral-900 text-neutral-300 px-6 py-2 w-3/4 md:w-1/2 rounded-sm border mx-auto border-neutral-800 relative"
+          !!state
+            ? "bg-neutral-900 text-neutral-300 px-6 py-2 w-3/4 md:w-1/2 rounded-sm border mx-auto border-neutral-800 relative"
+            : ""
         }
         ref={ref}
       >
@@ -59,7 +61,7 @@ const PostPage = () => {
           {isLoading ? (
             "Loading..."
           ) : (
-            <div className={!!state && "pt-10"}>
+            <div className={!!state ? "pt-10" : ""}>
               <Post {...data} comments={comments} full />
             </div>
           )}

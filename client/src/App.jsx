@@ -38,6 +38,7 @@ function App() {
       <Routes location={background || location}>
         <Route path="/" element={<Layout />}>
           <Route index element={<Subreddit />} />
+          <Route path="/r/:community" element={<Subreddit />} />
           <Route path="/comments/:id" element={<PostPage />} />
         </Route>
       </Routes>

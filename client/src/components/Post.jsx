@@ -22,12 +22,16 @@ const Post = ({
   const location = useLocation();
   const user = useAuth();
 
+  const community = location.state
+    ? location.state.background.pathname.split("/")[2]
+    : location.pathname.split("/")[2];
+
   return (
     <div
       className={`${
         location.state ? "" : "border border-neutral-700 bg-neutral-800"
       } rounded-md p-2 ${
-        !full && "hover:border-neutral-400"
+        !full ? "hover:border-neutral-400" : ""
       } flex items-start gap-4`}
     >
       <Voting commentId={_id} upVotes={upVotes} downVotes={downVotes} col />
@@ -51,11 +55,20 @@ const Post = ({
             {!!user && (
               <>
                 <hr className="border-neutral-400 my-4" />
-                <CommentForm rootId={_id} parentId={_id} />
+                <CommentForm
+                  rootId={_id}
+                  parentId={_id}
+                  community={community}
+                />
               </>
             )}
             <hr className="border-neutral-400 my-4" />
-            <Comments parentId={_id} rootId={_id} comments={comments} />
+            <Comments
+              parentId={_id}
+              rootId={_id}
+              comments={comments}
+              community={community}
+            />
           </>
         ) : (
           <Link

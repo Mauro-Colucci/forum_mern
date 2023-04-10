@@ -3,9 +3,10 @@ import newRequest from "../utils/newRequest";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Input from "./Input";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setPostOpen } from "../state/modalSlice";
+//import userOutsideClick from "../hooks/useOutsideClick";
 
 const PostFormModal = () => {
   const [post, setPost] = useState({
@@ -15,10 +16,10 @@ const PostFormModal = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { community } = useParams();
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: (post) => newRequest.post("/comments", post),
+    mutationFn: (post) => newRequest.post("/comments", { ...post, community }),
     onSuccess: ({ data }) => {
       queryClient.invalidateQueries(post);
       navigate(`/comments/${data._id}`);
@@ -28,10 +29,13 @@ const PostFormModal = () => {
   const handlesubmit = (e) => {
     e.preventDefault();
     mutation.mutate(post);
+    dispatch(setPostOpen());
   };
 
   const handleTitle = (e) => setPost({ ...post, title: e.target.value });
   const handleBody = (e) => setPost({ ...post, body: e.target.value });
+
+  //const ref = userOutsideClick(() => dispatch(setPostOpen()));
 
   return (
     <div className="h-screen w-full bg-[rgba(0,0,0,.9)] fixed top-12 left-0 py-5 z-20 overflow-y-scroll">
@@ -57,7 +61,7 @@ const PostFormModal = () => {
             <Button outline onClick={() => dispatch(setPostOpen())}>
               Cancel
             </Button>
-            <Button>POST</Button>
+            <Button type="submit">POST</Button>
           </div>
         </form>
       </div>

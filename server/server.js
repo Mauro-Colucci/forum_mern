@@ -8,6 +8,7 @@ import errorHandler from "./middleware/errorHandler.js";
 
 import authRoutes from "./routes/auth.js";
 import commentsRoutes from "./routes/comments.js";
+import communityRoutes from "./routes/community.js";
 
 dotenv.config({ path: "./config/.env" });
 const app = express();
@@ -26,10 +27,11 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/comments", commentsRoutes);
+app.use("/api/community", communityRoutes);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   connectDB();
   console.log(`Server listening on port ${PORT}`);
 });

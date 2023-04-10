@@ -4,7 +4,13 @@ import Button from "./Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../utils/newRequest";
 
-const CommentForm = ({ rootId, parentId, showHeader = true, closeComment }) => {
+const CommentForm = ({
+  rootId,
+  parentId,
+  showHeader = true,
+  community,
+  closeComment,
+}) => {
   const user = useAuth();
   const [comment, setComment] = useState("");
 
@@ -13,7 +19,8 @@ const CommentForm = ({ rootId, parentId, showHeader = true, closeComment }) => {
   const commentData = { body: comment, parentId, rootId };
 
   const mutation = useMutation({
-    mutationFn: (comment) => newRequest.post("/comments", comment),
+    mutationFn: (comment) =>
+      newRequest.post("/comments", { ...comment, community }),
     onSuccess: () => {
       queryClient.invalidateQueries(["comment"]);
       setComment("");
@@ -23,7 +30,6 @@ const CommentForm = ({ rootId, parentId, showHeader = true, closeComment }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(commentData);
-    closeComment();
   };
 
   return (

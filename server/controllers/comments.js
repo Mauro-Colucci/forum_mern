@@ -1,9 +1,8 @@
-import User from "../models/User.js";
 import Comment from "../models/Comment.js";
 import createError from "../utils/createError.js";
 
 export const getPosts = async (req, res, next) => {
-  const { search } = req.query;
+  const { search, community } = req.query;
   const filter = search
     ? {
         $or: [
@@ -12,6 +11,10 @@ export const getPosts = async (req, res, next) => {
         ],
       }
     : { rootId: null };
+
+  if (community) filter.community = community;
+
+  console.log(community, filter);
   try {
     const posts = await Comment.find(filter).sort({ createdAt: -1 });
     res.status(200).send(posts);

@@ -5,12 +5,15 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import Voting from "./Voting";
+import useAuth from "../hooks/useAuth";
 
 const Comments = (props) => {
   const comments = props.comments?.filter(
     (comment) => props.parentId === comment.parentId
   );
   const [showForm, setShowForm] = useState(false);
+
+  const user = useAuth();
 
   return (
     <div>
@@ -46,13 +49,15 @@ const Comments = (props) => {
                   upVotes={comment.upVotes}
                   downVotes={comment.downVotes}
                 />
-                <button
-                  className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
-                  onClick={() => setShowForm(comment._id)}
-                >
-                  <BiMessage />
-                  Reply
-                </button>
+                {!!user && (
+                  <button
+                    className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
+                    onClick={() => setShowForm(comment._id)}
+                  >
+                    <BiMessage />
+                    Reply
+                  </button>
+                )}
               </div>
               {showForm === comment._id && (
                 <CommentForm
@@ -60,6 +65,7 @@ const Comments = (props) => {
                   showHeader={false}
                   parentId={comment._id}
                   rootId={props.rootId}
+                  community={props.community}
                 />
               )}
               {replies.length > 0 && (

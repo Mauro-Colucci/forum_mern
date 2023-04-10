@@ -24,18 +24,25 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
   return (
     <div
       className={`flex ${
-        col && "flex-col-reverse"
+        col ? "flex-col-reverse" : ""
       } items-center gap-1 text-neutral-500`}
     >
-      <button className={downVoteClass} onClick={() => handleVote("downVote")}>
-        <AiOutlineArrowDown />
-      </button>
+      {!!user && (
+        <button
+          className={downVoteClass}
+          onClick={() => handleVote("downVote")}
+        >
+          <AiOutlineArrowDown />
+        </button>
+      )}
       <span className="font-semibold text-neutral-300">
         {upVotes.length - downVotes.length}
       </span>
-      <button className={upVoteClass} onClick={() => handleVote("upVote")}>
-        <AiOutlineArrowUp />
-      </button>
+      {!!user && (
+        <button className={upVoteClass} onClick={() => handleVote("upVote")}>
+          <AiOutlineArrowUp />
+        </button>
+      )}
     </div>
   );
 };
