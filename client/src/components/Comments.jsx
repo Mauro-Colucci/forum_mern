@@ -52,7 +52,7 @@ const Comments = (props) => {
                 {!!user && (
                   <button
                     className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
-                    onClick={() => setShowForm(comment._id)}
+                    onClick={() => setShowForm((prev) => (prev = comment._id))}
                   >
                     <BiMessage />
                     Reply
@@ -61,7 +61,7 @@ const Comments = (props) => {
               </div>
               {showForm === comment._id && (
                 <CommentForm
-                  closeComment={() => setShowForm(false)}
+                  closeComment={() => setShowForm((prev) => (prev = false))}
                   showHeader={false}
                   parentId={comment._id}
                   rootId={props.rootId}

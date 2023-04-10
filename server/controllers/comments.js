@@ -1,4 +1,5 @@
 import Comment from "../models/Comment.js";
+import Community from "../models/Community.js";
 import createError from "../utils/createError.js";
 
 export const getPosts = async (req, res, next) => {
@@ -8,16 +9,27 @@ export const getPosts = async (req, res, next) => {
         $or: [
           { title: { $regex: search, $options: "i" } },
           { body: { $regex: search, $options: "i" } },
+          //instead of searching for the query in the comment model for communities, it should check in the community model
+          //test commented queries in the try
+          //{ community: { $regex: search, $options: "i" } },
         ],
       }
     : { rootId: null };
 
   if (community) filter.community = community;
-
-  console.log(community, filter);
+  let communityRes = null;
   try {
     const posts = await Comment.find(filter).sort({ createdAt: -1 });
-    res.status(200).send(posts);
+    if (search) {
+      communityRes = await Community.find({
+        name: { $regex: search, $options: "i" },
+      })
+        .sort({ createdAt: -1 })
+        .lean()
+        .exec();
+    }
+    //res.status(200).send(posts,communityRes)
+    res.status(200).send({ posts, communities: communityRes });
   } catch (err) {
     next(err);
   }

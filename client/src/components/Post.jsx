@@ -18,13 +18,17 @@ const Post = ({
   comments,
   upVotes,
   downVotes,
+  community,
 }) => {
   const location = useLocation();
   const user = useAuth();
 
-  const community = location.state
+  //change this, it bugs out in not pop up
+  /*   const community = location.state
     ? location.state.background.pathname.split("/")[2]
-    : location.pathname.split("/")[2];
+    : location.pathname.split("/")[2]; */
+
+  console.log(community);
 
   return (
     <div

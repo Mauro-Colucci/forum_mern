@@ -14,6 +14,7 @@ const Subreddit = () => {
     queryKey: ["community"],
     queryFn: () =>
       newRequest.get(`/community/${community}`).then((res) => res.data),
+    enabled: !!community,
   });
 
   return (

@@ -1,7 +1,7 @@
 import Post from "./Post";
 import newRequest from "../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Posts = ({ community }) => {
   const { search } = useLocation();
@@ -9,7 +9,7 @@ const Posts = ({ community }) => {
     queryKey: ["comment", "community", community, search],
     queryFn: () =>
       newRequest
-        .get(`/comments${search}?community=${community || ""}`)
+        .get(`/comments${search}${community ? `?community=${community}` : ""}`)
         .then((res) => res.data),
   });
 
@@ -17,7 +17,22 @@ const Posts = ({ community }) => {
     <>
       {isLoading
         ? "Loading..."
-        : data.map((post) => <Post key={post._id} {...post} />)}
+        : data.posts.map((post) => <Post key={post._id} {...post} />)}
+      {data?.communities?.map((community) => (
+        <div
+          className={
+            "border border-neutral-700 bg-neutral-800 hover:border-neutral-400 rounded-md p-4"
+          }
+          /*   style={{ backgroundImage: `url(${community.avatar})` }} */
+          key={community._id}
+        >
+          <Link to={`/r/${community.name}`} className="cursor-pointer">
+            <h2 className="text-2xl tracking-wide text-neutral-300 stroke-2 stroke-blue-400">
+              r/{community.name}
+            </h2>
+          </Link>
+        </div>
+      ))}
     </>
   );
 };
