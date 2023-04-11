@@ -13,9 +13,11 @@ const Comments = (props) => {
     (comment) => props.parentId === comment.parentId
   );
   const [showForm, setShowForm] = useState(false);
-  const [areChildrenHidden, setAreChildrenHidden] = useState(false);
+  const [hideComment, setHideComment] = useState([]);
 
   const user = useAuth();
+
+  console.log(hideComment);
 
   return (
     <>
@@ -25,12 +27,16 @@ const Comments = (props) => {
         );
         return (
           <div key={comment._id}>
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-3">
               <button
                 className={`text-cyan-400 self-start mt-2 ${
-                  areChildrenHidden !== comment._id ? "hidden" : ""
+                  hideComment.includes(comment._id) ? "" : "hidden"
                 }`}
-                onClick={() => setAreChildrenHidden(false)}
+                onClick={() =>
+                  setHideComment((prev) =>
+                    prev.filter((id) => id !== comment._id)
+                  )
+                }
               >
                 <AiOutlineExpandAlt size="1.2rem" />
               </button>
@@ -48,7 +54,7 @@ const Comments = (props) => {
                     · {moment(comment.createdAt).fromNow()}
                   </span>
                 </div>
-                {areChildrenHidden !== comment._id && (
+                {!hideComment.includes(comment._id) && (
                   <>
                     <ReactMarkdown
                       className="pb-2 text-neutral-300"
@@ -88,23 +94,23 @@ const Comments = (props) => {
               <>
                 <div
                   className={`flex ${
-                    areChildrenHidden === comment._id ? "hidden" : ""
+                    hideComment.includes(comment._id) ? "hidden" : ""
                   }`}
                 >
                   <button
                     aria-label="Hide Replies"
                     className="collapse-line w-7 relative cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:-top-14 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
-                    onClick={() => setAreChildrenHidden(comment._id)}
+                    onClick={() =>
+                      setHideComment((prev) => [...prev, comment._id])
+                    }
                   />
                   <div className="pl-2 flex-grow">
-                    <div className="my-2 mx-0">
-                      <Comments
-                        comments={props.comments}
-                        parentId={comment._id}
-                        rootId={props.rootId}
-                        community={props.community}
-                      />
-                    </div>
+                    <Comments
+                      comments={props.comments}
+                      parentId={comment._id}
+                      rootId={props.rootId}
+                      community={props.community}
+                    />
                   </div>
                 </div>
               </>

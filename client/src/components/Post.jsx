@@ -23,13 +23,6 @@ const Post = ({
   const location = useLocation();
   const user = useAuth();
 
-  //change this, it bugs out in not pop up
-  /*   const community = location.state
-    ? location.state.background.pathname.split("/")[2]
-    : location.pathname.split("/")[2]; */
-
-  console.log(community);
-
   return (
     <div
       className={`${
@@ -40,12 +33,25 @@ const Post = ({
     >
       <Voting commentId={_id} upVotes={upVotes} downVotes={downVotes} col />
       <div className="w-full">
-        <h6 className="text-neutral-500 text-xs mb-1">
-          Posted by u/{author} {moment(createdAt).fromNow()}
-        </h6>
+        <div className="flex items-center gap-1 mb-3">
+          <Link to={`/r/${community}`} className="flex items-center gap-2">
+            <img
+              src="/img/noavatar.png"
+              alt={`${community} community avatar image.`}
+              className="h-6 w-6 rounded-full object-cover"
+            />
+            <span className="text-neutral-300 font-semibold">
+              r/{community}
+            </span>
+          </Link>
+          <span className="text-neutral-500 text-xs">•</span>
+          <span className="text-neutral-500 text-xs">
+            Posted by u/{author} {moment(createdAt).fromNow()}
+          </span>
+        </div>
         {full ? (
           <>
-            <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+            <h2 className="text-xl mb-3 text-neutral-400">{title}</h2>
             <div className="pt-1 px-2 pb-2">
               {/* <p className="text-sm leading-6 text-neutral-400"> */}
               {/* {body} */}
@@ -80,7 +86,7 @@ const Post = ({
             state={{ background: location }}
             className="cursor-pointer"
           >
-            <h2 className="text-xl mb-3 text-neutral-300">{title}</h2>
+            <h2 className="text-xl mb-3 text-neutral-400">{title}</h2>
             <div className="mask-linear-gradient overflow-hidden max-h-60 pt-1 px-2 pb-2">
               <p className="text-sm leading-6 text-neutral-400">{body}</p>
             </div>

@@ -3,7 +3,7 @@ import newRequest from "../utils/newRequest";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useLocation } from "react-router-dom";
 
-const Posts = ({ community }) => {
+const Posts = ({ community, communityAvatar }) => {
   const { search } = useLocation();
   const { isLoading, data } = useQuery({
     queryKey: ["comment", "community", community, search],
@@ -17,7 +17,9 @@ const Posts = ({ community }) => {
     <>
       {isLoading
         ? "Loading..."
-        : data.posts.map((post) => <Post key={post._id} {...post} />)}
+        : data.posts.map((post) => (
+            <Post key={post._id} {...post} communityAvatar={communityAvatar} />
+          ))}
       {data?.communities?.map((community) => (
         <div
           className={

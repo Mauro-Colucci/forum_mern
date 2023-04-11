@@ -16,7 +16,6 @@ const Subreddit = () => {
       newRequest.get(`/community/${community}`).then((res) => res.data),
     enabled: !!community,
   });
-
   return (
     <>
       {!!community && <SubHeader {...data} />}
@@ -26,7 +25,7 @@ const Subreddit = () => {
         }`}
       >
         {!!user && !!community && <PostForm />}
-        <Posts community={community} />
+        <Posts community={community} communityAvatar={data?.avatar} />
       </div>
     </>
   );
