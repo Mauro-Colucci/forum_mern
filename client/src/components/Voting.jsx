@@ -1,4 +1,4 @@
-import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai";
+import { BiDownvote, BiUpvote } from "react-icons/Bi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import newRequest from "../utils/newRequest";
 import useAuth from "../hooks/useAuth";
@@ -32,7 +32,7 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
           className={downVoteClass}
           onClick={() => handleVote("downVote")}
         >
-          <AiOutlineArrowDown />
+          <BiDownvote size="1.25rem" />
         </button>
       )}
       <span className="font-semibold text-neutral-300">
@@ -40,7 +40,7 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
       </span>
       {!!user && (
         <button className={upVoteClass} onClick={() => handleVote("upVote")}>
-          <AiOutlineArrowUp />
+          <BiUpvote size="1.25rem" />
         </button>
       )}
     </div>

@@ -30,6 +30,7 @@ const CommentForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(commentData);
+    closeComment();
   };
 
   return (

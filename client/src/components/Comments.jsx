@@ -1,4 +1,5 @@
 import { BiMessage } from "react-icons/Bi";
+import { AiOutlineExpandAlt } from "react-icons/ai";
 import moment from "moment";
 import CommentForm from "./CommentForm";
 import { useState } from "react";
@@ -12,74 +13,106 @@ const Comments = (props) => {
     (comment) => props.parentId === comment.parentId
   );
   const [showForm, setShowForm] = useState(false);
+  const [areChildrenHidden, setAreChildrenHidden] = useState(false);
 
   const user = useAuth();
 
   return (
-    <div>
+    <>
       {comments?.map((comment) => {
         const replies = props.comments.filter(
           (c) => c.parentId === comment._id
         );
         return (
           <div key={comment._id}>
-            <div className="flex gap-2 items-center text-sm mb-1">
+            <div className="flex gap-2">
+              <button
+                className={`text-cyan-400 self-start mt-2 ${
+                  areChildrenHidden !== comment._id ? "hidden" : ""
+                }`}
+                onClick={() => setAreChildrenHidden(false)}
+              >
+                <AiOutlineExpandAlt size="1.2rem" />
+              </button>
               <img
                 src="/img/noavatar.png"
                 alt="User profile picture."
                 className="h-8 w-8 rounded-full object-cover"
               />
-              <span className="text-neutral-300">{comment.author}</span>
-              <span className="text-neutral-400">
-                - {moment(comment.createdAt).fromNow()}
-              </span>
-            </div>
-            <div className="border-l border-neutral-500 px-3 pt-3 ml-4">
-              {/* <p className="pb-2 text-neutral-300"> */}
-              {/* {comment.body} */}
-              <ReactMarkdown
-                className="pb-2 text-neutral-300"
-                remarkPlugins={[gfm]}
-                children={comment.body}
-              />
-              {/* </p> */}
-              <div className="flex gap-2 mb-2">
-                <Voting
-                  commentId={comment._id}
-                  upVotes={comment.upVotes}
-                  downVotes={comment.downVotes}
-                />
-                {!!user && (
-                  <button
-                    className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
-                    onClick={() => setShowForm((prev) => (prev = comment._id))}
-                  >
-                    <BiMessage />
-                    Reply
-                  </button>
+              <div>
+                <div className="flex gap-2 items-center text-sm mt-2 mb-1">
+                  <span className="text-neutral-300 font-semibold">
+                    {comment.author}
+                  </span>
+                  <span className="text-neutral-400">
+                    · {moment(comment.createdAt).fromNow()}
+                  </span>
+                </div>
+                {areChildrenHidden !== comment._id && (
+                  <>
+                    <ReactMarkdown
+                      className="pb-2 text-neutral-300"
+                      remarkPlugins={[gfm]}
+                      children={comment.body}
+                    />
+                    <div className="flex gap-2 mb-2">
+                      <Voting
+                        commentId={comment._id}
+                        upVotes={comment.upVotes}
+                        downVotes={comment.downVotes}
+                      />
+                      {!!user && (
+                        <button
+                          className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
+                          onClick={() => setShowForm(comment._id)}
+                        >
+                          <BiMessage size="1.2rem" />
+                          Reply
+                        </button>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
-              {showForm === comment._id && (
-                <CommentForm
-                  closeComment={() => setShowForm((prev) => (prev = false))}
-                  showHeader={false}
-                  parentId={comment._id}
-                  rootId={props.rootId}
-                  community={props.community}
-                />
-              )}
-              {replies.length > 0 && (
-                <Comments
-                  comments={props.comments}
-                  parentId={comment._id}
-                  rootId={props.rootId}
-                />
-              )}
             </div>
+            {showForm === comment._id && (
+              <CommentForm
+                closeComment={() => setShowForm(false)}
+                showHeader={false}
+                parentId={comment._id}
+                rootId={props.rootId}
+                community={props.community}
+              />
+            )}
+            {replies.length > 0 && (
+              <>
+                <div
+                  className={`flex ${
+                    areChildrenHidden === comment._id ? "hidden" : ""
+                  }`}
+                >
+                  <button
+                    aria-label="Hide Replies"
+                    className="collapse-line w-7 relative cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:-top-14 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
+                    onClick={() => setAreChildrenHidden(comment._id)}
+                  />
+                  <div className="pl-2 flex-grow">
+                    <div className="my-2 mx-0">
+                      <Comments
+                        comments={props.comments}
+                        parentId={comment._id}
+                        rootId={props.rootId}
+                        community={props.community}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         );
       })}
-    </div>
+    </>
   );
 };
 export default Comments;
