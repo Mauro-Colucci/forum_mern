@@ -24,7 +24,7 @@ const Comments = (props) => {
           (c) => c.parentId === comment._id
         );
         return (
-          <div key={comment._id}>
+          <div key={comment._id} className="relative">
             <div className="flex gap-2 mt-3">
               <button
                 className={`text-cyan-400 self-start mt-2 ${
@@ -43,7 +43,7 @@ const Comments = (props) => {
                 alt="User profile picture."
                 className="h-8 w-8 rounded-full object-cover"
               />
-              <div className="">
+              <div className="w-full">
                 <div className="flex gap-2 items-center text-sm mt-2 mb-1">
                   <span className="text-neutral-300 font-semibold">
                     {comment.author}
@@ -80,30 +80,32 @@ const Comments = (props) => {
                   </>
                 )}
                 {showForm.includes(comment._id) && (
-                  <CommentForm
-                    closeComment={() =>
-                      setShowForm((prev) =>
-                        prev.filter((id) => id !== comment._id)
-                      )
-                    }
-                    showHeader={false}
-                    parentId={comment._id}
-                    rootId={props.rootId}
-                    community={props.community}
-                  />
+                  <div className="border-l-[2px] border-neutral-500 pl-5">
+                    <CommentForm
+                      closeComment={() =>
+                        setShowForm((prev) =>
+                          prev.filter((id) => id !== comment._id)
+                        )
+                      }
+                      showHeader={false}
+                      parentId={comment._id}
+                      rootId={props.rootId}
+                      community={props.community}
+                    />
+                  </div>
                 )}
               </div>
             </div>
             {replies.length > 0 && (
               <>
                 <div
-                  className={`flex relative ${
+                  className={`flex ${
                     hideComment.includes(comment._id) ? "hidden" : ""
                   }`}
                 >
                   <button
                     aria-label="Hide Replies"
-                    className="w-7 cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:top-0 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
+                    className="w-7 cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:top-10 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
                     onClick={() =>
                       setHideComment((prev) => [...prev, comment._id])
                     }

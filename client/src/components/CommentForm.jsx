@@ -34,7 +34,7 @@ const CommentForm = ({
   };
 
   return (
-    <div>
+    <>
       {showHeader && (
         <p className="text-neutral-500 text-xs mb-2">
           Comment as u/{user?.username}
@@ -54,10 +54,10 @@ const CommentForm = ({
               Cancel
             </Button>
           )}
-          <Button>Comment</Button>
+          <Button type="submit">Comment</Button>
         </div>
       </form>
-    </div>
+    </>
   );
 };
 export default CommentForm;
