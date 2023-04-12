@@ -12,12 +12,10 @@ const Comments = (props) => {
   const comments = props.comments?.filter(
     (comment) => props.parentId === comment.parentId
   );
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState([]);
   const [hideComment, setHideComment] = useState([]);
 
   const user = useAuth();
-
-  console.log(hideComment);
 
   return (
     <>
@@ -70,7 +68,9 @@ const Comments = (props) => {
                       {!!user && (
                         <button
                           className="flex gap-1 items-center text-sm px-2 py-1 hover:bg-neutral-700 font-semibold text-neutral-500"
-                          onClick={() => setShowForm(comment._id)}
+                          onClick={() =>
+                            setShowForm((prev) => [...prev, comment._id])
+                          }
                         >
                           <BiMessage size="1.2rem" />
                           Reply
@@ -81,9 +81,11 @@ const Comments = (props) => {
                 )}
               </div>
             </div>
-            {showForm === comment._id && (
+            {showForm.includes(comment._id) && (
               <CommentForm
-                closeComment={() => setShowForm(false)}
+                closeComment={() =>
+                  setShowForm((prev) => prev.filter((id) => id !== comment._id))
+                }
                 showHeader={false}
                 parentId={comment._id}
                 rootId={props.rootId}

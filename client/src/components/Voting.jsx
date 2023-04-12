@@ -7,10 +7,10 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
   const user = useAuth();
   const upVoteClass = upVotes.includes(user?.id)
     ? "text-orange-600"
-    : "hover:text-neutral-200";
+    : "hover:text-orange-600";
   const downVoteClass = downVotes.includes(user?.id)
-    ? "text-orange-600"
-    : "hover:text-neutral-200";
+    ? "text-blue-600"
+    : "hover:text-blue-600";
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (vote) => newRequest.patch(`/comments/${commentId}/${vote}`),
@@ -20,6 +20,11 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
   const handleVote = (vote) => {
     mutation.mutate(vote);
   };
+
+  const formatter = Intl.NumberFormat("en", {
+    notation: "compact",
+    maximumSignificantDigits: 3,
+  });
 
   return (
     <div
@@ -35,8 +40,8 @@ const Voting = ({ commentId, upVotes, downVotes, col }) => {
           <BiDownvote size="1.25rem" />
         </button>
       )}
-      <span className="font-semibold text-neutral-300">
-        {upVotes.length - downVotes.length}
+      <span className="font-bold text-sm leading-4 text-neutral-300">
+        {formatter.format(upVotes.length - downVotes.length)}
       </span>
       {!!user && (
         <button className={upVoteClass} onClick={() => handleVote("upVote")}>

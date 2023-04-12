@@ -29,10 +29,12 @@ const Post = ({
         location.state ? "" : "border border-neutral-700 bg-neutral-800"
       } rounded-md p-2 ${
         !full ? "hover:border-neutral-400" : ""
-      } flex items-start gap-4`}
+      } flex items-start gap-4 relative overflow-hidden`}
     >
-      <Voting commentId={_id} upVotes={upVotes} downVotes={downVotes} col />
-      <div className="w-full">
+      <div className=" bg-neutral-900 absolute top-0 left-0 h-full w-10 pt-2">
+        <Voting commentId={_id} upVotes={upVotes} downVotes={downVotes} col />
+      </div>
+      <div className="w-full ml-10">
         <div className="flex items-center gap-1 mb-3">
           <Link to={`/r/${community}`} className="flex items-center gap-2">
             <img
