@@ -43,7 +43,7 @@ const Comments = (props) => {
                 alt="User profile picture."
                 className="h-8 w-8 rounded-full object-cover"
               />
-              <div>
+              <div className="">
                 <div className="flex gap-2 items-center text-sm mt-2 mb-1">
                   <span className="text-neutral-300 font-semibold">
                     {comment.author}
@@ -55,7 +55,7 @@ const Comments = (props) => {
                 {!hideComment.includes(comment._id) && (
                   <>
                     <ReactMarkdown
-                      className="pb-2 text-neutral-300"
+                      className="pb-2 text-neutral-300 break-word"
                       remarkPlugins={[gfm]}
                       children={comment.body}
                     />
@@ -79,34 +79,36 @@ const Comments = (props) => {
                     </div>
                   </>
                 )}
+                {showForm.includes(comment._id) && (
+                  <CommentForm
+                    closeComment={() =>
+                      setShowForm((prev) =>
+                        prev.filter((id) => id !== comment._id)
+                      )
+                    }
+                    showHeader={false}
+                    parentId={comment._id}
+                    rootId={props.rootId}
+                    community={props.community}
+                  />
+                )}
               </div>
             </div>
-            {showForm.includes(comment._id) && (
-              <CommentForm
-                closeComment={() =>
-                  setShowForm((prev) => prev.filter((id) => id !== comment._id))
-                }
-                showHeader={false}
-                parentId={comment._id}
-                rootId={props.rootId}
-                community={props.community}
-              />
-            )}
             {replies.length > 0 && (
               <>
                 <div
-                  className={`flex ${
+                  className={`flex relative ${
                     hideComment.includes(comment._id) ? "hidden" : ""
                   }`}
                 >
                   <button
                     aria-label="Hide Replies"
-                    className="collapse-line w-7 relative cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:-top-14 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
+                    className="w-7 cursor-pointer before:bg-neutral-500 hover:before:bg-neutral-300 focus-visible:before:bg-neutral-300 before:absolute before:w-[2px] before:top-0 before:bottom-0 before:left-4 before:transition duration-100 ease-in-out before:bg"
                     onClick={() =>
                       setHideComment((prev) => [...prev, comment._id])
                     }
                   />
-                  <div className="pl-2 flex-grow">
+                  <div className="pl-2 w-11/12">
                     <Comments
                       comments={props.comments}
                       parentId={comment._id}
